@@ -1,10 +1,12 @@
 //TODO: Impement other returns.
-class storage {
-    save(key : string, value : string) : void {
+export class Storage {
+    save(key : string, value : string) : boolean {
         try {
             localStorage.setItem(key, JSON.stringify(value));
+            return true;
         } catch (err) {
             console.error("Could not save to localStorage", err);
+            return false;
         }
     }
 
