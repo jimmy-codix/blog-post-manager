@@ -4,9 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog Post Manager</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+  <main>
+    <section id="form-section">
+      <form id="post-form">
+        <label for="post-title">Title</label>
+        <input type="text" id="post-title" placeholder="Title" required />
+        <label for="post-author">Author</label>
+        <input type="text" id="post-author" placeholder="Author" required />
+        <label for="post-content">Content</label>
+        <textarea id="post-content" placeholder="Post Content" required></textarea>
+        <button class="create-post-button">Create Post</button>
+      </form>
+    </section>
+    <section id="posts-section">
+      <article>
+        <h2>Post Title</h2>
+        <h3>Post Author</h3>
+        <h4>Post Date</h4>
+        <p>Post Content</p>
+      </article>
+    </section>
+  </main>
 </body>
 </html>
 
