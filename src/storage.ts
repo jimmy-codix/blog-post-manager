@@ -1,6 +1,6 @@
 //TODO: Impement other returns.
 export class Storage {
-    save(key : string, value : string) : boolean {
+    save(key : string, value : Array<any>) : boolean {
         try {
             localStorage.setItem(key, JSON.stringify(value));
             return true;
@@ -10,7 +10,7 @@ export class Storage {
         }
     }
 
-    load(key : string) : string | null {
+    load(key : string) : Array<any> | null {
         try {
             const data = localStorage.getItem(key);
             return data ? JSON.parse(data) : null;
