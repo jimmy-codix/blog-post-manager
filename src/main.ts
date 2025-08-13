@@ -2,22 +2,18 @@ import { Storage } from './storage.ts';
 import type { IBlogPost } from './types.ts';
 import { v4 as uuid } from 'uuid';
 
+//This will be used in functions.
 const storage = new Storage();
-
-/*
-const myArray = [
-  { title: 'Title 1', author: "Alice", date: "2023-01-01", content: "Content 1" },
-  { title: 'Title 2', author: "Bob", date: "2023-01-02", content: "Content 2"  }
-];
-*/
-//storage.save('blogPosts', myArray);
+const formEl = document.querySelector('#post-form') as HTMLFormElement;
 
 init();
 
 function init() {
-  const formEl = document.querySelector('#post-form') as HTMLFormElement;
+  formEl.addEventListener('submit', (e) => onSubmitHandler(e));
+  loadData();
+}
 
-  formEl.addEventListener('submit', (e) => {
+function onSubmitHandler(e: Event) {
   e.preventDefault();
 
   const newBlogPost: IBlogPost = {
@@ -28,34 +24,24 @@ function init() {
     content: formEl.querySelector<HTMLTextAreaElement>('#post-content')!.value
   };
 
-  console.log("New blog post:", newBlogPost);
-
   const newBlogPostEl = createNewBlogPostEl(newBlogPost);
   document.querySelector('#posts-section')!.insertAdjacentElement('afterbegin', newBlogPostEl);
 
   //save
-  console.log(storage.save('blogPosts', [...(storage.load('blogPosts') || []), newBlogPost]));
+  storage.save('blogPosts', [...(storage.load('blogPosts') || []), newBlogPost]);
   formEl.reset();
-});
-  // Load data from storage
+};
+
+function loadData() {
   const blogPosts = storage.load('blogPosts');
-  console.log("blogPosts:", blogPosts);
   if (blogPosts) {
-    // Render blog posts
     blogPosts.forEach((post) => {
-      const article = document.createElement('article');
-      article.innerHTML = `
-        <h2>${post.title}</h2>
-        <h3>${post.author}</h3>
-        <h4>${post.date}</h4>
-        <p>${post.content}</p>
-      `;
-      document.querySelector('#posts-section')!.prepend(article);
+      const article = createNewBlogPostEl(post);
+      document.querySelector('#posts-section')!.insertAdjacentElement('afterbegin', article);
     });
   }
-
-
 } 
+
 function createNewBlogPostEl(post: IBlogPost): HTMLElement {
   const article = document.createElement('article');
   article.innerHTML = `
@@ -67,35 +53,6 @@ function createNewBlogPostEl(post: IBlogPost): HTMLElement {
   return article;
 }
 
-function generateId(): string {
-  return uuid();
+function generateId(): string { 
+  return uuid(); 
 }
-
-/* TODO old code that serve as a reference right now.
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
-import { Storage } from './storage.ts'
-
-const storage = new Storage();
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
-
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
-*/
