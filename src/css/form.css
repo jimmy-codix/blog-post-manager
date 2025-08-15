@@ -1,0 +1,38 @@
+#post-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7em;
+  padding: 1em;
+  color: black;
+}
+
+#post-form label {
+ font-weight: bold;
+}
+
+#post-form textarea {
+  height: 7rem;
+  width: 100%;
+}
+
+#post-form input {
+  height: 1.5rem;
+}
+
+#post-form button{
+  width: 100%;
+  height: 2rem;
+  color: white;
+}
+
+#post-form button:hover{
+  color: black;
+}
+
+#post-form .form-buttons {
+  display: flex;
+  gap: 0.5em;
+  justify-content: space-between;
+  width: 100%;
+}

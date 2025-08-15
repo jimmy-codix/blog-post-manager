@@ -1,33 +1,31 @@
-import { Storage } from './storage.ts';
+import { Storage } from './storage.class.ts';
 import { type IBlogPost } from './types.ts';
 import { v4 as uuid } from 'uuid';
 
 //This will be used in functions.
-const storage = new Storage();
+const storage = new Storage('blogPosts');
 const formEl = document.querySelector('#post-form') as HTMLFormElement;
 const postSection = document.querySelector<HTMLElement>('#posts-section');
 let blogPosts: IBlogPost[] = [];
-const PostState = {
-  Add: 'add',
-  Edit: 'edit',
-};
-
-let ps = PostState.Add;
 let editPostId: string ='';
+//const sampleData = [{"id":"119cb0bc-71e9-4f36-8891-82a5b85b509c","title":"Måndag","author":"Jimmy","date":"2025-08-15T12:50:21.901Z","content":"Privat blogg – ny vecka, samma noll besökare."},{"id":"152cb267-4eb3-4d5f-8f38-b09e7d2de199","title":"Tisdag","author":"Jimmy","date":"2025-08-15T12:50:44.182Z","content":"LocalStorage-tisdag – där mina hemlisar tar en fikapaus."},{"id":"f8fdfceb-70d8-4e8c-b90e-b790c9723815","title":"Onsdag","author":"Jimmy","date":"2025-08-15T12:51:01.806Z","content":"Mitt-i-veckan-uppdatering: fortfarande ohackbar, fortfarande oläst."},{"id":"42b579d1-96d2-43d2-beb2-e129347d3d94","title":"Torsdag","author":"Jimmy","date":"2025-08-15T12:51:19.216Z","content":"Torsdagar är för tankar som ingen annan någonsin får se."},{"id":"826aacfc-3813-4ed8-9ea4-1d69e36d94ac","title":"Fredag","author":"Jimmy","date":"2025-08-15T12:51:34.377Z","content":"Privat blogg-fredag – för molnet kan inte festa som vi."},{"id":"04924f8b-8fb7-4ed1-85fb-1220a1348eb9","title":"Lördag","author":"Jimmy","date":"2025-08-15T12:51:55.834Z","content":"Helgläge: offline, osynlig, oövervinnerlig."},{"id":"1dde65e3-7233-4961-a50f-fe1acdcd1ff3","title":"Söndag","author":"Jimmy","date":"2025-08-15T12:52:13.779Z","content":"Privat blogg-söndag – min datas vilodag."}];
 
 init();
-
-console.log(blogPosts);
-
-//throw new Error('Function not implemented.');
 
 function init() : void {
   formEl.addEventListener('submit', (e) => onSubmitHandler(e));
   postSection?.addEventListener('click', (e) => onPostSectionClick(e));
+  formEl.querySelector('.cancel-post-button')!.addEventListener('click', () => {
+    formEl.reset();
+    editPostId = '';
+    formEl.querySelector('.create-post-button')!.textContent = 'Add';
+  });
+  formEl.querySelector('.create-post-button')!.textContent = 'Add';
+
   loadData();
 }
 
-function onPostSectionClick(e: PointerEvent): void {
+function onPostSectionClick(e: MouseEvent): void {
  const target = e.target as HTMLElement;
  if (target.classList.contains('delete-post-button')) {
    onDeleteHandler(target);
@@ -60,9 +58,10 @@ function EditPost(id : string) : void{
 
   postSection.querySelector<HTMLElement>(`article[data-id="${id}"]`)?.replaceWith(createNewBlogPostEl(post));
 
-  storage.save('blogPosts', blogPosts);
+  storage.save(blogPosts);
   formEl.reset();
   editPostId = '';
+  formEl.querySelector('.create-post-button')!.textContent = 'Add';
 }
 
 
@@ -75,23 +74,25 @@ function AddPost(){
     content: formEl.querySelector<HTMLTextAreaElement>('#post-content')!.value
   };
 
+  //Add to array
+  blogPosts.unshift(newBlogPost);
+
+  //Add to DOM
   const newBlogPostEl = createNewBlogPostEl(newBlogPost);
   document.querySelector('#posts-section')!.insertAdjacentElement('afterbegin', newBlogPostEl);
 
   //save
-  //storage.save('blogPosts', [...(storage.load('blogPosts') || []), newBlogPost]);
   saveData(newBlogPost);
-  
 }
 
-function saveData(newPost : IBlogPost){
-  storage.save('blogPosts', [...(storage.load('blogPosts') || []), newPost]);
+function saveData(newPost : IBlogPost) : void{
+  storage.save([...(storage.load() || []), newPost]);
   formEl.reset();
 }
 
 function loadData() {
   //There may be no blog posts
-  blogPosts = storage.load('blogPosts') || [];
+  blogPosts = storage.load() || [];
   if (blogPosts) {
     blogPosts.forEach((post) => {
       const article = createNewBlogPostEl(post);
@@ -104,14 +105,27 @@ function createNewBlogPostEl(post: IBlogPost): HTMLElement {
   const article = document.createElement('article');
   article.setAttribute('data-id', String(post.id));
   article.innerHTML = `
-    <h2>${post.title}</h2>
-    <h3>${post.author}</h3>
-    <h4>${post.date}</h4>
-    <p>${post.content}</p>
+    <h2 class="blog-post-title">${post.title}</h2>
+    <h3 class="blog-post-author">Author: ${post.author}</h3>
+    <h4 class="blog-post-date">Date: ${getDateString(post.date)}</h4>
+    <p class="blog-post-content">${post.content.replace(/\n/g, "<br>")}</p>
     <button class="delete-post-button material-symbols-outlined">delete</button>
     <button class="edit-post-button material-symbols-outlined">edit</button>
   `;
   return article;
+}
+
+function getDateString(stringDate : Date) : string {
+  const date = new Date(stringDate);
+  const datestr =  date.toLocaleString(undefined, {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false
+  });
+  return datestr;
 }
 
 function generateId(): string { 
@@ -124,21 +138,21 @@ function onDeleteHandler(target: HTMLElement) {
   target.parentElement?.remove();
   //Remove from Array
   blogPosts = blogPosts.filter(post => post.id !== postId);
-  console.log(blogPosts);
+
   //TODO remove from database
-  storage.save('blogPosts', blogPosts);
+  storage.save(blogPosts);
 }
 
 function onEditHandler(target: HTMLElement) {
   const parent = target.parentElement;
-  ps = PostState.Edit;
   const postId = parent?.dataset.id;
-  const post = blogPosts.find(post => post.id === postId);
+  const post = blogPosts.find(post => post.id == postId);
   if (post) {
     formEl.querySelector<HTMLInputElement>('#post-title')!.value = post.title;
     formEl.querySelector<HTMLInputElement>('#post-author')!.value = post.author;
     formEl.querySelector<HTMLTextAreaElement>('#post-content')!.value = post.content;
     editPostId = String(post.id);
+    formEl.querySelector('.create-post-button')!.textContent = 'Update';
   }
 }
 

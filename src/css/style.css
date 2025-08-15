@@ -1,0 +1,120 @@
+@import url('./base.css');
+@import url('./form.css');
+
+html {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Felipa", serif;
+  font-family: "Quintessential", serif;
+  color: rgb(0, 0, 0);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background-image: url("/src/img/alexander-grey-62vi3TG5EDg-unsplash.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+#posts-section .blog-post-title{
+  font-family: "Quintessential", serif;
+  font-size: 1.8rem;
+  font-weight: bold;
+  font-weight: normal;
+  background-color: rgba(249, 249, 249, 0.8);
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#posts-section .blog-post-author, #posts-section .blog-post-date{
+  font-size: 1rem;
+  font-weight: normal;
+}
+
+button {
+  border-radius: 5px;
+  border: 1px solid transparent;
+  padding: 0.2em 0.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color:#0f8ad1cd;
+  cursor: pointer;
+  color:white;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #0f8ad1cd;
+  background-color: rgb(172, 225, 255);
+  color:black;
+}
+/* button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+} */
+
+main {
+  display: flex;
+  padding: 2em; 
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+  width: 100%;
+}
+
+section {
+  margin: 2rem 0;
+  padding: 1em;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: rgba(249, 249, 249, 0.8);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#form-section{
+  height: fit-content;
+  position: sticky;
+  top: 1rem;
+  min-width: 275px;
+}
+
+#posts-section {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  width: 100%;
+  flex: 1;
+}
+
+#posts-section .blog-post-content{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+#posts-section h2{
+}
+
+header {
+  background-color: rgba(249, 249, 249, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+header h1 {
+  font-size: 2rem;
+  margin: 0;
+}

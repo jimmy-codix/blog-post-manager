@@ -4,10 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Blog Post Manager</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/src/css/style.css">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC:wght@100..900&family=Quintessential&display=swap" rel="stylesheet">
 </head>
 <body>
+ <header>
+    <h1>Private blog – no cloud, no crowd.</h1>
+  </header>
   <main>
     <section id="form-section">
       <form id="post-form">
@@ -17,12 +21,14 @@
         <input type="text" id="post-author" placeholder="Author" required />
         <label for="post-content">Content</label>
         <textarea id="post-content" placeholder="Post Content" required></textarea>
-        <button class="create-post-button" type="submit">Create Post</button>
+        <div class="form-buttons">
+          <button class="create-post-button" type="submit">Add</button>
+          <button class="cancel-post-button" type="button">Cancel</button>
+        </div>
       </form>
     </section>
-    <section id="posts-section">
-    </section>
+    <section id="posts-section"></section>
   </main>
-  <script type="module" src="/src/main.ts"></script>
+  <script type="module" src="/src/lib/main.ts"></script>
 </body>
 </html>
