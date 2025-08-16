@@ -26,10 +26,6 @@
   color: white;
 }
 
-#post-form button:hover{
-  color: black;
-}
-
 #post-form .form-buttons {
   display: flex;
   gap: 0.5em;

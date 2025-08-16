@@ -15,7 +15,7 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  background-image: url("/src/img/alexander-grey-62vi3TG5EDg-unsplash.jpg");
+  background-image: url("../img/alexander-grey-62vi3TG5EDg-unsplash.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -53,11 +53,7 @@ button {
   color:white;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #0f8ad1cd;
-  background-color: rgb(172, 225, 255);
-  color:black;
-}
+
 
 main {
   display: flex;
@@ -101,9 +97,6 @@ section {
   padding-bottom: 1rem;
 }
 
-#posts-section h2{
-}
-
 header {
   background-color: rgba(249, 249, 249, 0.8);
   backdrop-filter: blur(10px);
@@ -116,6 +109,30 @@ header h1 {
   font-size: 2rem;
   margin: 0;
   min-width: 300px;
+}
+
+@media (hover: hover) {
+    button:hover {
+    border-color: #0f8ad1cd;
+    background-color: rgb(172, 225, 255);
+    color:black;
+  }
+
+  #post-form button:hover{
+    color: black;
+  }
+}
+
+@media (hover: none) {
+  button:active {
+    border-color: #0f8ad1cd;
+    background-color: rgb(172, 225, 255);
+    color:black;
+  }
+
+  #post-form button:active{
+    color: black;
+  }
 }
 
 @media screen and (max-width: 650px) {
