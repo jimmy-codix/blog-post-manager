@@ -93,13 +93,24 @@ function saveData(newPost : IBlogPost) : void{
 function loadData() {
   //There may be no blog posts
   blogPosts = storage.load() || [];
-  if (blogPosts) {
-    blogPosts.forEach((post) => {
-      const article = createNewBlogPostEl(post);
-      document.querySelector('#posts-section')!.insertAdjacentElement('afterbegin', article);
-    });
+  //Load sample data if there are no posts
+  if (blogPosts.length === 0) {
+    blogPosts = [
+      {
+        id: generateId(),
+        title: 'Sample Post 1',
+        author: 'Author 1',
+        date: new Date(),
+        content: 'This is the content of a sample post.\n\nDelete it!'
+      }
+    ];
   }
-} 
+
+  blogPosts.forEach((post) => {
+    const article = createNewBlogPostEl(post);
+    document.querySelector('#posts-section')!.insertAdjacentElement('afterbegin', article);
+  });
+}
 
 function createNewBlogPostEl(post: IBlogPost): HTMLElement {
   const article = document.createElement('article');
